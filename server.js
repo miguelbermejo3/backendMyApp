@@ -19,7 +19,7 @@ app.use(cors({
 
 app.use(bodyParser.json());
 // Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI) // Utiliza la variable de entorno
+mongoose.connect(process.env.PORT) // Utiliza la variable de entorno
   .then(() => {
     console.log('Conectado a MongoDB');
   })
@@ -33,8 +33,6 @@ const Trabajo = mongoose.models.Trabajo || mongoose.model('Trabajo', new mongoos
     horaEntrada: String,
     horaSalida: String
 }));
-
-
 
 
 // Ruta para guardar un nuevo trabajo
