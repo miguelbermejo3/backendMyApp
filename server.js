@@ -2,19 +2,30 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-require('dotenv').config(); // Cargar variables de entorno desde el archivo .env
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config(); // Cargar variables de entorno desde .env solo en desarrollo
+}
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configurar CORS manualmente
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Permitir cualquier origen
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Métodos permitidos
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Encabezados permitidos
-  next();  // Pasar al siguiente middleware
-});
+app.use(cors({
+  origin: '*',  // Permitir cualquier origen
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],  // Métodos permitidos
+  allowedHeaders: ['Content-Type', 'Authorization'],  // Encabezados permitidos
+}));
+
 app.use(bodyParser.json());
+// Conexión a MongoDB
+mongoose.connect(process.env.MONGO_URI) // Utiliza la variable de entorno
+  .then(() => {
+    console.log('Conectado a MongoDB');
+  })
+  .catch((err) => console.error('Error al conectar MongoDB', err));
+
+
 
 // Verificar si el modelo ya está registrado para evitar duplicados
 const Trabajo = mongoose.models.Trabajo || mongoose.model('Trabajo', new mongoose.Schema({
@@ -24,13 +35,6 @@ const Trabajo = mongoose.models.Trabajo || mongoose.model('Trabajo', new mongoos
 }));
 
 
-
-// Conexión a MongoDB
-mongoose.connect(process.env.MONGO_URI) // Utiliza la variable de entorno
-  .then(() => {
-    console.log('Conectado a MongoDB');
-  })
-  .catch((err) => console.error('Error al conectar MongoDB', err));
 
 
 // Ruta para guardar un nuevo trabajo
