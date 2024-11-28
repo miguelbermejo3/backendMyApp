@@ -7,9 +7,13 @@ require('dotenv').config(); // Cargar variables de entorno desde el archivo .env
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({
-  origin:'*'
-}));
+// Configurar CORS manualmente
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Permitir cualquier origen
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); // Métodos permitidos
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Encabezados permitidos
+  next();  // Pasar al siguiente middleware
+});
 app.use(bodyParser.json());
 
 // Verificar si el modelo ya está registrado para evitar duplicados
