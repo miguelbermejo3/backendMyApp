@@ -16,15 +16,15 @@ const Trabajo = mongoose.models.Trabajo || mongoose.model('Trabajo', new mongoos
     horaSalida: String
 }));
 
+require('dotenv').config(); // Cargar variables de entorno desde el archivo .env
+
 // Conexión a MongoDB
-mongoose.connect('mongodb+srv://betis5268:betis5268@trabajos.vw96c.mongodb.net/Trabajos?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
+mongoose.connect(process.env.MONGO_URI) // Utiliza la variable de entorno
+  .then(() => {
     console.log('Conectado a MongoDB');
-})
-.catch((err) => console.error('Error al conectar MongoDB', err));
+  })
+  .catch((err) => console.error('Error al conectar MongoDB', err));
+
 
 // Ruta para guardar un nuevo trabajo
 app.post('/trabajos', async (req, res) => {
