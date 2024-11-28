@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config(); // Cargar variables de entorno desde el archivo .env
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +19,7 @@ const Trabajo = mongoose.models.Trabajo || mongoose.model('Trabajo', new mongoos
     horaSalida: String
 }));
 
-require('dotenv').config(); // Cargar variables de entorno desde el archivo .env
+
 
 // Conexión a MongoDB
 mongoose.connect(process.env.MONGO_URI) // Utiliza la variable de entorno
