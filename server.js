@@ -6,7 +6,9 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin:'*'
+}));
 app.use(bodyParser.json());
 
 // Verificar si el modelo ya está registrado para evitar duplicados
@@ -87,10 +89,15 @@ app.get('/trabajos', async (req, res) => {
         res.status(500).json({ error: 'Error al obtener el trabajo' });
       });
   });
+
+  app.get('/', (req, res) => {
+    res.send('Bienvenido a la API de Trabajos');
+  });
+  
   
   
 
 // Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+app.listen(process.env.PORT || 3000, ()  => {
+    console.log(`Servidor ejecutándose en http://localhost:${process.env.PORT || 3000}`);
 });
